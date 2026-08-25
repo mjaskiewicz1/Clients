@@ -1,0 +1,12 @@
+<Project>
+  <PropertyGroup>
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+    <PackageOutputPath>$(MSBuildThisFileDirectory)artifacts/nuget</PackageOutputPath>
+    <Authors>Client Team</Authors>
+    <Company>Client Projects</Company>
+    <RepositoryType>git</RepositoryType>
+    <PackageTags>nuget;client;library</PackageTags>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+  </PropertyGroup>
+</Project>

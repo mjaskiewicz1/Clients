@@ -1,88 +1,34 @@
-name: Release NuGet package by PR scope
+name: Publish GitHub package
 
 on:
-  push:
-    branches:
-      - master
-  pull_request:
+  release:
     types:
-      - opened
-      - synchronize
-      - reopened
-      - edited
-    branches:
-      - master
+      - published
 
 jobs:
-  detect-scope:
-    runs-on: ubuntu-latest
-    outputs:
-      scope: ${{ steps.scope.outputs.scope }}
-      project_path: ${{ steps.scope.outputs.project_path }}
-    steps:
-      - name: Detect conventional commit scope
-        id: scope
-        shell: bash
-        env:
-          MESSAGE: ${{ github.event_name == 'pull_request' && github.event.pull_request.title || github.event.head_commit.message }}
-        run: |
-          echo "Message: $MESSAGE"
-          if [[ "$MESSAGE" =~ ^.+\(([^)]+)\): ]]; then
-            scope="${BASH_REMATCH[1]}"
-          else
-            scope="none"
-          fi
-
-          case "$scope" in
-            radio-browser)
-              project_path="RadioBrowser/RadioBrowser/RadioBrowser.csproj"
-              ;;
-            *)
-              project_path=""
-              ;;
-          esac
-
-          echo "Detected scope: $scope"
-          echo "Project path: $project_path"
-          echo "scope=$scope" >> "$GITHUB_OUTPUT"
-          echo "project_path=$project_path" >> "$GITHUB_OUTPUT"
-
-  release:
-    needs: detect-scope
-    if: github.ref == 'refs/heads/master' && needs.detect-scope.outputs.scope != 'none' && needs.detect-scope.outputs.project_path != ''
+  publish:
+    if: startsWith(github.event.release.tag_name, 'RadioBrowser-v')
     runs-on: ubuntu-latest
     permissions:
-      contents: write
-      pull-requests: write
+      contents: read
+      packages: write
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
 
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: '10.0.x'
 
-      - name: Create GitHub release and changelog
-        id: release
-        uses: googleapis/release-please-action@v4
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          config-file: .release-please-config.json
-          manifest-file: .release-please-manifest.json
+      - name: Pack package
+        run: dotnet pack "RadioBrowser/RadioBrowser/RadioBrowser.csproj" -c Release -o artifacts/github --nologo
 
-      - name: Pack NuGet package
-        if: ${{ steps.release.outputs.release_created }}
-        run: dotnet pack "${{ needs.detect-scope.outputs.project_path }}" -c Release -o artifacts/nuget --nologo
-
-      - name: Publish to NuGet
-        if: ${{ steps.release.outputs.release_created }}
+      - name: Publish to GitHub Packages
         env:
-          NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          dotnet nuget push "artifacts/nuget/*.nupkg" \
-            --api-key "$NUGET_API_KEY" \
-            --source https://api.nuget.org/v3/index.json \
+          dotnet nuget push "artifacts/github/*.nupkg" \
+            --api-key "$GITHUB_TOKEN" \
+            --source "https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json" \
             --skip-duplicate

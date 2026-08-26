@@ -4,7 +4,10 @@
     "RadioBrowser": {
       "release-type": "dotnet",
       "package-name": "RadioBrowser",
-      "changelog-path": "CHANGELOG.md"
+      "changelog-path": "CHANGELOG.md",
+      "extra-files": [
+        "RadioBrowser/RadioBrowser/RadioBrowser.csproj"
+      ]
     }
   }
 }

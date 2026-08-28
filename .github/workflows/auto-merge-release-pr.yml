@@ -7,15 +7,15 @@ on:
       - reopened
       - synchronize
       - ready_for_review
+      - labeled
     branches:
       - master
 
 jobs:
   auto-merge:
     if: |
-      github.event.pull_request.user.login == 'github-actions[bot]' &&
-      startsWith(github.event.pull_request.title, 'chore(') &&
-      contains(github.event.pull_request.title, 'release')
+      startsWith(github.event.pull_request.head.ref, 'release-please--branches--') &&
+      contains(github.event.pull_request.labels.*.name, 'autorelease: pending')
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -23,7 +23,7 @@ jobs:
     steps:
       - name: Merge the generated release PR
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.RELEASE_TOKEN }}
         run: |
           gh pr merge "${{ github.event.pull_request.number }}" \
             --repo "${{ github.repository }}" \

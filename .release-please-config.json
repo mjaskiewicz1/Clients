@@ -1,13 +1,16 @@
 {
   "$schema": "https://raw.githubusercontent.com/googleapis/release-please/main/schemas/config.json",
+  "separate-pull-requests": true,
   "packages": {
     "RadioBrowser": {
-      "release-type": "dotnet",
+      "release-type": "simple",
       "package-name": "RadioBrowser",
+      "component": "RadioBrowser",
+      "include-component-in-tag": true,
+      "include-v-in-tag": true,
+      "tag-separator": "-",
       "changelog-path": "CHANGELOG.md",
-      "extra-files": [
-        "RadioBrowser/RadioBrowser/RadioBrowser.csproj"
-      ]
+      "pull-request-title-pattern": "chore${scope}: Release${component} ${version}"
     }
   }
 }

@@ -15,9 +15,9 @@ public sealed class DateTimeOffsetConverter : JsonConverter<DateTimeOffset>
 
         var value = reader.GetString();
 
-        if (value is not null && DateTimeOffset.TryParse(value, CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal, out var dateTimeOffset))
-            return dateTimeOffset;
-        throw new RadioBrowserException($"Radio Browser returned an invalid DateTimeOffset value: '{value}'.");
+        return value is not null && DateTimeOffset.TryParse(value, CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal, out var dateTimeOffset)
+            ? dateTimeOffset
+            : throw new RadioBrowserException($"Radio Browser returned an invalid DateTimeOffset value: '{value}'.");
     }
 
     public override void Write(Utf8JsonWriter writer, DateTimeOffset value, JsonSerializerOptions options)

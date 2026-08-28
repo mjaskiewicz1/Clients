@@ -21,41 +21,10 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-  detect-projects:
-    runs-on: ubuntu-latest
-    outputs:
-      projects: ${{ steps.set-matrix.outputs.projects }}
-      has-changes: ${{ steps.set-matrix.outputs.has-changes }}
-    steps:
-      - name: Checkout source code
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
-      - name: Find changed client projects
-        id: set-matrix
-        run: |
-          # Pobiera zmienione podfoldery w katalogu Clients/
-          CHANGED_DIRS=$(git diff --name-only origin/master...HEAD | grep '^Clients/' | cut -d/ -f1,2 | sort -u || true)
-          
-          if [ -n "$CHANGED_DIRS" ]; then
-            # Konwertuje listę zmienionych katalogów na tablicę JSON dla strategii matrix
-            PROJECTS_JSON=$(echo "$CHANGED_DIRS" | jq -R . | jq -s -c .)
-            echo "has-changes=true" >> $GITHUB_OUTPUT
-            echo "projects=$PROJECTS_JSON" >> $GITHUB_OUTPUT
-          else
-            echo "has-changes=false" >> $GITHUB_OUTPUT
-            echo "projects=[]" >> $GITHUB_OUTPUT
-          fi
-
   build:
-    needs: [conventional-commits, detect-projects]
-    if: always() && (needs.conventional-commits.result == 'success' || needs.conventional-commits.result == 'skipped') && needs.detect-projects.outputs.has-changes == 'true'
+    needs: conventional-commits
+    if: always() && needs.conventional-commits.result == 'success'
     runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        project: ${{ fromJson(needs.detect-projects.outputs.projects) }}
 
     steps:
       - name: Checkout source code
@@ -68,12 +37,9 @@ jobs:
 
       - name: Restore NuGet dependencies
         run: dotnet restore
-        working-directory: ${{ matrix.project }}
 
       - name: Verify code formatting
         run: dotnet format --verify-no-changes --severity info -v diag
-        working-directory: ${{ matrix.project }}
 
       - name: Build project in Release mode
         run: dotnet build --no-restore --configuration Release -v minimal
-        working-directory: ${{ matrix.project }}

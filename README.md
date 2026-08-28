@@ -1,19 +1,24 @@
-# Clients monorepo
+## Dodawanie klienta
 
-This repository keeps each client/package as a separate .NET project under its own folder.
+Każdy klient API jest rozwijany jako niezależny projekt .NET i oddzielna paczka NuGet.
 
-Structure:
+Schemat:
 
-- `Clients.slnx` - solution entry point
-- `RadioBrowser/` - package/client project
-  - `RadioBrowser/RadioBrowser.csproj` - NuGet project
-  - `RadioBrowser/CHANGELOG.md` - generated changelog for the package
+```text
+Repozytorium
+├── konfiguracja wspólna
+├── automatyzacja CI/CD
+└── KlientApi/
+    ├── projekt .NET
+    ├── dokumentacja
+    └── historia zmian
+```
 
-Release flow:
+Aby dodać kolejnego klienta:
 
-- every PR should use a conventional commit scope matching the client name, for example `feat(radio-browser): ...`
-- on merge to `master`, the release workflow reads the scope and creates a package release only for that project
-- `release-please` manages automatic changelog creation and semantic versioning
-- the workflow then packs and publishes the NuGet package to nuget.org
+1. utwórz osobny katalog i projekt .NET;
+2. dodaj dokumentację klienta;
+3. dołącz projekt do rozwiązania;
+4. zarejestruj ścieżkę projektu w konfiguracji Release Please.
 
-If you add another client, create a new folder under the repo root and register it in the release config. The pattern is reusable for all future packages.
+Wersjonowanie, tworzenie wydań i publikowanie paczek są realizowane niezależnie dla każdego klienta.

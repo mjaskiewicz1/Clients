@@ -1,0 +1,62 @@
+name: Publish GitHub package
+
+on:
+  release:
+    types:
+      - published
+
+jobs:
+  publish:
+    if: contains(github.event.release.tag_name, '-v')
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup .NET SDK
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+
+      - name: Resolve project and package version from release tag
+        id: package
+        shell: bash
+        env:
+          TAG_NAME: ${{ github.event.release.tag_name }}
+        run: |
+          if [[ ! "$TAG_NAME" =~ ^([A-Za-z0-9._-]+)-v([0-9]+\.[0-9]+\.[0-9]+(-[A-Za-z0-9.-]+)?(\+[A-Za-z0-9.-]+)?)$ ]]; then
+            echo "Unsupported release tag: $TAG_NAME"
+            exit 1
+          fi
+
+          CLIENT_NAME="${BASH_REMATCH[1]}"
+          PACKAGE_VERSION="${BASH_REMATCH[2]}"
+          PROJECT_PATH="$CLIENT_NAME/$CLIENT_NAME/$CLIENT_NAME.csproj"
+
+          if [[ ! -f "$PROJECT_PATH" ]]; then
+            echo "Project not found: $PROJECT_PATH"
+            exit 1
+          fi
+
+          echo "project_path=$PROJECT_PATH" >> "$GITHUB_OUTPUT"
+          echo "version=$PACKAGE_VERSION" >> "$GITHUB_OUTPUT"
+
+      - name: Pack the package
+        run: |
+          dotnet pack "${{ steps.package.outputs.project_path }}" \
+            --configuration Release \
+            --output artifacts/github \
+            --property:PackageVersion=${{ steps.package.outputs.version }} \
+            --nologo
+
+      - name: Publish to GitHub Packages
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          dotnet nuget push "artifacts/github/*.nupkg" \
+            --api-key "$GITHUB_TOKEN" \
+            --source "https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json" \
+            --skip-duplicate

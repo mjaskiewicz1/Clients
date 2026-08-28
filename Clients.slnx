@@ -1,3 +1,7 @@
 <Solution>
+  <Folder Name="/configuration/">
+    <File Path=".release-please-config.json" />
+    <File Path=".release-please-manifest.json" />
+  </Folder>
   <Project Path="RadioBrowser/RadioBrowser/RadioBrowser.csproj" />
 </Solution>

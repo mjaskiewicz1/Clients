@@ -7,5 +7,6 @@ public enum CountryCode
     [JsonStringEnumMemberName("PL")] Pl,
     [JsonStringEnumMemberName("GB")] Gb,
     [JsonStringEnumMemberName("DE")] De,
-    [JsonStringEnumMemberName("US")] Us
+    [JsonStringEnumMemberName("US")] Us,
+    [JsonStringEnumMemberName("ES")] Es
 }

@@ -9,12 +9,11 @@ namespace RadioBrowser.Infrastructure;
 
 public class BaseClient(IRestClient client)
 {
-    private static readonly JsonSerializerOptions DeserializeSettings = new() { Converters = { new RadioBrowserDateTimeConverter(), new RadioBrowserDateTimeOffsetConverter() } };
+    private static readonly JsonSerializerOptions DeserializeSettings = new() { Converters = { new DateTimeConverter(), new DateTimeOffsetConverter(), new BoolConverter() } };
 
     protected async Task<T> RequestAsync<T>(RestRequest request) where T : class
     {
         var res = await client.ExecuteAsync(request).ConfigureAwait(false);
-
         if (!res.IsSuccessful)
             throw new RadioBrowserException($"[{request.Resource} => Status: {res.StatusCode}] Unsuccessful request!\nContent:\n{res.Content}", res.StatusCode);
 

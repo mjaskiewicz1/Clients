@@ -6,7 +6,7 @@ using RadioBrowser.Exceptions;
 
 namespace RadioBrowser.Converters;
 
-public sealed class RadioBrowserDateTimeConverter : JsonConverter<DateTime>
+public sealed class DateTimeConverter : JsonConverter<DateTime>
 {
     private const string ApiDateFormat = "yyyy-MM-dd HH:mm:ss";
 

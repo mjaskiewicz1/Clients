@@ -4,5 +4,4 @@
     <File Path=".release-please-manifest.json" />
   </Folder>
   <Project Path="RadioBrowser/RadioBrowser/RadioBrowser.csproj" />
-  <Project Path="TestRider/TestRider.csproj" />
 </Solution>

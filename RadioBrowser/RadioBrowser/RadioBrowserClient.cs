@@ -18,9 +18,7 @@ public sealed class RadioBrowserClient(IRestClient client, ILogger? logger) : Ba
 {
     public static RadioBrowserClient Factory(ILogger? logger = null)
     {
-#pragma warning disable S1075
         var options = new RestClientOptions(new Uri("https://de1.api.radio-browser.info/json"));
-#pragma warning restore S1075
         var client = new RestClient(options);
         return new RadioBrowserClient(client, logger);
     }

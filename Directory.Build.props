@@ -2,11 +2,31 @@
   <PropertyGroup>
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
     <PackageOutputPath>$(MSBuildThisFileDirectory)artifacts/nuget</PackageOutputPath>
-    <Authors>Client Team</Authors>
-    <Company>Client Projects</Company>
+
+    <Authors>Michał Jaśkiewicz</Authors>
     <RepositoryType>git</RepositoryType>
+    <RepositoryUrl>https://github.com/mjaskiewicz1/Clients</RepositoryUrl>
+
     <PackageTags>nuget;client;library</PackageTags>
+
     <IncludeSymbols>true</IncludeSymbols>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+
+    <PackageReadmeFile Condition="Exists('$(MSBuildProjectDirectory)/../README.md')">README.md</PackageReadmeFile>
+    <PackageIcon Condition="Exists('$(MSBuildProjectDirectory)/../icon.png')">icon.png</PackageIcon>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None
+      Include="$(MSBuildProjectDirectory)/../README.md"
+      Pack="true"
+      PackagePath=""
+      Condition="Exists('$(MSBuildProjectDirectory)/../README.md')" />
+
+    <None
+      Include="$(MSBuildProjectDirectory)/../icon.png"
+      Pack="true"
+      PackagePath=""
+      Condition="Exists('$(MSBuildProjectDirectory)/../icon.png')" />
+  </ItemGroup>
 </Project>

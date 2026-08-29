@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.1](https://github.com/mjaskiewicz1/Clients/compare/RadioBrowser-v1.2.0...RadioBrowser-v1.2.1) (2026-08-29)
+
+
+### Bug Fixes
+
+* **radio-browser:** Add package metadata and documentation ([#14](https://github.com/mjaskiewicz1/Clients/issues/14)) ([67b08f4](https://github.com/mjaskiewicz1/Clients/commit/67b08f4fee0996a5df8171dc39a1bd6e9dedad63))
+
 ## [1.2.0](https://github.com/mjaskiewicz1/Clients/compare/RadioBrowser-v1.1.0...RadioBrowser-v1.2.0) (2026-08-28)
 
 

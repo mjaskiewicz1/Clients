@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.2](https://github.com/mjaskiewicz1/Clients/compare/RadioBrowser-v1.2.1...RadioBrowser-v1.2.2) (2026-08-30)
+
+
+### Bug Fixes
+
+* **radio-browser:** Use unique package identifier ([#16](https://github.com/mjaskiewicz1/Clients/issues/16)) ([0b638ee](https://github.com/mjaskiewicz1/Clients/commit/0b638ee36efdd30bad0d05e9341d9dd6fc204f12))
+
 ## [1.2.1](https://github.com/mjaskiewicz1/Clients/compare/RadioBrowser-v1.2.0...RadioBrowser-v1.2.1) (2026-08-29)
 
 

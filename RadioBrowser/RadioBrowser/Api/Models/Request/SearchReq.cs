@@ -15,4 +15,7 @@ public sealed record SearchReq
     [JsonPropertyName("countrycode")] public CountryCode? CountryCode { get; init; }
     [JsonPropertyName("state")] public string? State { get; init; }
     [JsonPropertyName("codec")] public Codec? Codec { get; init; }
+    [JsonPropertyName("order")] public Order? Order { get; init; }
+    [JsonPropertyName("reverse")] public bool? Reverse { get; init; }
+    [JsonPropertyName("hidebroken")] public bool? HideBroken { get; init; }
 }

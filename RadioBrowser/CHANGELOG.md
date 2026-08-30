@@ -1,5 +1,16 @@
 # Changelog
 
+## [2.0.0](https://github.com/mjaskiewicz1/Clients/compare/RadioBrowser-v1.2.2...RadioBrowser-v2.0.0) (2026-08-30)
+
+
+### ⚠ BREAKING CHANGES
+
+* **api:** Add new station search filters and support nullable response values ([#18](https://github.com/mjaskiewicz1/Clients/issues/18))
+
+### Features
+
+* **api:** Add new station search filters and support nullable response values ([#18](https://github.com/mjaskiewicz1/Clients/issues/18)) ([e630533](https://github.com/mjaskiewicz1/Clients/commit/e63053326109e52863236f65ef100063663291fd))
+
 ## [1.2.2](https://github.com/mjaskiewicz1/Clients/compare/RadioBrowser-v1.2.1...RadioBrowser-v1.2.2) (2026-08-30)
 
 

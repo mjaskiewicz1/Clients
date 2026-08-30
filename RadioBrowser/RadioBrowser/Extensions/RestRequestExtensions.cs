@@ -53,7 +53,7 @@ public static class RestRequestExtensions
         {
             string stringValue => stringValue,
             Enum enumValue => GetEnumValue(enumValue),
-            bool boolValue => boolValue.ToString(),
+            bool boolValue => boolValue ? "true" : "false",
             _ => throw new RadioBrowserException($"Query parameter type '{value.GetType().Name}' is not supported.")
         };
     }

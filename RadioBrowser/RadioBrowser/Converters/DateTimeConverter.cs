@@ -6,24 +6,27 @@ using RadioBrowser.Exceptions;
 
 namespace RadioBrowser.Converters;
 
-public sealed class DateTimeConverter : JsonConverter<DateTime>
+public sealed class DateTimeConverter : JsonConverter<DateTime?>
 {
     private const string ApiDateFormat = "yyyy-MM-dd HH:mm:ss";
 
-    public override DateTime Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+    public override DateTime? Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {
         var value = GetDateValue(ref reader, nameof(DateTime));
+        if (string.IsNullOrEmpty(value))
+            return null;
 
         return DateTime.TryParseExact(value, ApiDateFormat, CultureInfo.InvariantCulture, DateTimeStyles.None, out var dateTime) ||
-            DateTime.TryParse(value, CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind, out dateTime)
+               DateTime.TryParse(value, CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind, out dateTime)
             ? dateTime
             : throw new RadioBrowserException($"Radio Browser returned an invalid DateTime value: '{value}'.");
     }
 
-    public override void Write(Utf8JsonWriter writer, DateTime value, JsonSerializerOptions options)
+    public override void Write(Utf8JsonWriter writer, DateTime? value, JsonSerializerOptions options)
     {
-        writer.WriteStringValue(value.ToString("O", CultureInfo.InvariantCulture));
+        writer.WriteStringValue(value?.ToString("O", CultureInfo.InvariantCulture));
     }
+
 
     private static string GetDateValue(ref Utf8JsonReader reader, string typeName)
     {

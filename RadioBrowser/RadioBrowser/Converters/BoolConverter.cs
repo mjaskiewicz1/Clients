@@ -1,4 +1,3 @@
-using System.Globalization;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
@@ -6,23 +5,27 @@ using RadioBrowser.Exceptions;
 
 namespace RadioBrowser.Converters;
 
-public sealed class BoolConverter : JsonConverter<bool>
+public sealed class BoolConverter : JsonConverter<bool?>
 {
-    public override bool Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+    public override bool? Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {
         // ReSharper disable once SwitchExpressionHandlesSomeKnownEnumValuesWithExceptionInDefault
         return reader.TokenType switch
         {
+            JsonTokenType.Null => null,
+
             JsonTokenType.True => true,
             JsonTokenType.False => false,
 
             JsonTokenType.String => reader.GetString() switch
             {
+                null => null,
+                var value when string.IsNullOrWhiteSpace(value) => null,
                 "1" => true,
                 "0" => false,
                 "true" => true,
                 "false" => false,
-                _ => throw new RadioBrowserException($"Radio Browser returned an invalid boolean value '{reader.GetString()}'.")
+                var value => throw new RadioBrowserException($"Radio Browser returned an invalid boolean value '{value}'.")
             },
 
             JsonTokenType.Number when reader.TryGetInt32(out var value) => value switch
@@ -36,8 +39,14 @@ public sealed class BoolConverter : JsonConverter<bool>
         };
     }
 
-    public override void Write(Utf8JsonWriter writer, bool value, JsonSerializerOptions options)
+    public override void Write(Utf8JsonWriter writer, bool? value, JsonSerializerOptions options)
     {
-        writer.WriteBooleanValue(value);
+        if (value is null)
+        {
+            writer.WriteNullValue();
+            return;
+        }
+
+        writer.WriteBooleanValue(value.Value);
     }
 }

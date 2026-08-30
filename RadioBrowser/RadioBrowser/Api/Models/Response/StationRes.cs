@@ -1,4 +1,3 @@
-using System.Diagnostics.CodeAnalysis;
 using System.Text.Json.Serialization;
 
 using JetBrains.Annotations;
@@ -23,22 +22,22 @@ public sealed record StationRes
     [JsonPropertyName("language")] public required string Language { get; init; }
     [JsonPropertyName("languagecodes")] public required string LanguageCodes { get; init; }
     [JsonPropertyName("votes")] public required int Votes { get; init; }
-    [JsonPropertyName("lastchangetime")] public required DateTime LastChangeTime { get; init; }
-    [JsonPropertyName("lastchangetime_iso8601")] public required DateTimeOffset LastChangeTimeIso8601 { get; init; }
+    [JsonPropertyName("lastchangetime")] public DateTime? LastChangeTime { get; init; }
+    [JsonPropertyName("lastchangetime_iso8601")] public DateTimeOffset? LastChangeTimeIso8601 { get; init; }
     [JsonPropertyName("codec")] public required string Codec { get; init; }
     [JsonPropertyName("bitrate")] public required int Bitrate { get; init; }
-    [JsonPropertyName("lastcheckok")] public required bool LastCheckOk { get; init; }
-    [JsonPropertyName("lastchecktime")] public required DateTime LastCheckTime { get; init; }
-    [JsonPropertyName("lastchecktime_iso8601")] public required DateTimeOffset LastCheckTimeIso8601 { get; init; }
-    [JsonPropertyName("lastcheckoktime")] public required DateTime LastCheckOkTime { get; init; }
-    [JsonPropertyName("lastcheckoktime_iso8601")] public required DateTimeOffset LastCheckOkTimeIso8601 { get; init; }
-    [JsonPropertyName("lastlocalchecktime")] public required DateTime LastLocalCheckTime { get; init; }
-    [JsonPropertyName("lastlocalchecktime_iso8601")] public required DateTimeOffset LastLocalCheckTimeIso8601 { get; init; }
-    [JsonPropertyName("clicktimestamp")] public required DateTime ClickTimestamp { get; init; }
-    [JsonPropertyName("clicktimestamp_iso8601")] public required DateTimeOffset ClickTimestampIso8601 { get; init; }
+    [JsonPropertyName("lastcheckok")] public bool? LastCheckOk { get; init; }
+    [JsonPropertyName("lastchecktime")] public DateTime? LastCheckTime { get; init; }
+    [JsonPropertyName("lastchecktime_iso8601")] public DateTimeOffset? LastCheckTimeIso8601 { get; init; }
+    [JsonPropertyName("lastcheckoktime")] public DateTime? LastCheckOkTime { get; init; }
+    [JsonPropertyName("lastcheckoktime_iso8601")] public DateTimeOffset? LastCheckOkTimeIso8601 { get; init; }
+    [JsonPropertyName("lastlocalchecktime")] public DateTime? LastLocalCheckTime { get; init; }
+    [JsonPropertyName("lastlocalchecktime_iso8601")] public DateTimeOffset? LastLocalCheckTimeIso8601 { get; init; }
+    [JsonPropertyName("clicktimestamp")] public DateTime? ClickTimestamp { get; init; }
+    [JsonPropertyName("clicktimestamp_iso8601")] public DateTimeOffset? ClickTimestampIso8601 { get; init; }
     [JsonPropertyName("clickcount")] public required int ClickCount { get; init; }
     [JsonPropertyName("clicktrend")] public required int ClickTrend { get; init; }
-    [JsonPropertyName("ssl_error")] public required bool SslError { get; init; }
+    [JsonPropertyName("ssl_error")] public bool? SslError { get; init; }
     [JsonPropertyName("geo_lat")] public double? GeoLat { get; init; }
     [JsonPropertyName("geo_long")] public double? GeoLong { get; init; }
     [JsonPropertyName("geo_distance")] public double? GeoDistance { get; init; }

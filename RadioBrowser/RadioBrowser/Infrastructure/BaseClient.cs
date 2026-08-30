@@ -1,5 +1,7 @@
 using System.Text.Json;
 
+using Microsoft.Extensions.Logging;
+
 using RadioBrowser.Converters;
 using RadioBrowser.Exceptions;
 
@@ -7,13 +9,15 @@ using RestSharp;
 
 namespace RadioBrowser.Infrastructure;
 
-public class BaseClient(IRestClient client)
+public class BaseClient(IRestClient client, ILogger? logger = null)
 {
     private static readonly JsonSerializerOptions DeserializeSettings = new() { Converters = { new DateTimeConverter(), new DateTimeOffsetConverter(), new BoolConverter() } };
 
     protected async Task<T> RequestAsync<T>(RestRequest request) where T : class
     {
         var res = await client.ExecuteAsync(request).ConfigureAwait(false);
+        if (logger?.IsEnabled(LogLevel.Debug) == true)
+            logger.LogDebug("Request URL: {ClientUrl}", client.BuildUri(request));
         if (!res.IsSuccessful)
             throw new RadioBrowserException($"[{request.Resource} => Status: {res.StatusCode}] Unsuccessful request!\nContent:\n{res.Content}", res.StatusCode);
 

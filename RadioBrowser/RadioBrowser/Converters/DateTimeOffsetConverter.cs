@@ -8,6 +8,7 @@ namespace RadioBrowser.Converters;
 
 public sealed class DateTimeOffsetConverter : JsonConverter<DateTimeOffset?>
 {
+#pragma warning disable IDE0046
     public override DateTimeOffset? Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {
         if (reader.TokenType == JsonTokenType.Null)
@@ -26,6 +27,7 @@ public sealed class DateTimeOffsetConverter : JsonConverter<DateTimeOffset?>
             : throw new RadioBrowserException($"Radio Browser returned an invalid DateTimeOffset value: '{value}'.");
     }
 
+#pragma warning restore IDE0046
     public override void Write(Utf8JsonWriter writer, DateTimeOffset? value, JsonSerializerOptions options)
     {
         if (value is null)

@@ -14,7 +14,7 @@ using RestSharp;
 namespace RadioBrowser;
 
 [UsedImplicitly(ImplicitUseKindFlags.Default, ImplicitUseTargetFlags.WithMembers, Reason = "Used as nuget package")]
-public sealed class RadioBrowserClient(IRestClient client, ILogger? logger) : BaseClient(client)
+public sealed class RadioBrowserClient(IRestClient client, ILogger? logger = null) : BaseClient(client, logger)
 {
     public static RadioBrowserClient Factory(ILogger? logger = null)
     {

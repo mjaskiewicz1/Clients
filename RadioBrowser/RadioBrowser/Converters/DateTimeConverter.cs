@@ -12,27 +12,28 @@ public sealed class DateTimeConverter : JsonConverter<DateTime?>
 
     public override DateTime? Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {
-        var value = GetDateValue(ref reader, nameof(DateTime));
-        if (string.IsNullOrEmpty(value))
+        if (reader.TokenType == JsonTokenType.Null)
             return null;
 
-        if (DateTime.TryParseExact(value, ApiDateFormat, CultureInfo.InvariantCulture, DateTimeStyles.None, out var dateTime) ||
-            DateTime.TryParse(value, CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind, out dateTime))
-        {
-            return dateTime;
-        }
+        if (reader.TokenType != JsonTokenType.String)
+            throw new RadioBrowserException("Radio Browser returned an invalid DateTimeOffset token. Expected a string.");
 
-        throw new RadioBrowserException($"Radio Browser returned an invalid DateTime value: '{value}'.");
+        var value = reader.GetString();
+
+        if (string.IsNullOrEmpty(value))
+            return null;
+        try
+        {
+            return DateTime.ParseExact(value, ApiDateFormat, CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind);
+        }
+        catch (Exception exception)
+        {
+            throw new RadioBrowserException($"Radio Browser returned an invalid DateTime value: '{value}'.", exception);
+        }
     }
 
     public override void Write(Utf8JsonWriter writer, DateTime? value, JsonSerializerOptions options)
     {
         writer.WriteStringValue(value?.ToString("O", CultureInfo.InvariantCulture));
-    }
-
-
-    private static string? GetDateValue(ref Utf8JsonReader reader, string typeName)
-    {
-        return reader.TokenType != JsonTokenType.String ? throw new RadioBrowserException($"Radio Browser returned an invalid {typeName} token. Expected a string.") : reader.GetString();
     }
 }

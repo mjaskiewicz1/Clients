@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.0.1](https://github.com/mjaskiewicz1/Clients/compare/RadioBrowser-v2.0.0...RadioBrowser-v2.0.1) (2026-09-01)
+
+
+### Bug Fixes
+
+* **radio-browser:** Handle empty favicon URL ([#20](https://github.com/mjaskiewicz1/Clients/issues/20)) ([2fc1bea](https://github.com/mjaskiewicz1/Clients/commit/2fc1bea393a3758c0aa8ea33d80348c4ad339f03))
+
 ## [2.0.0](https://github.com/mjaskiewicz1/Clients/compare/RadioBrowser-v1.2.2...RadioBrowser-v2.0.0) (2026-08-30)
 
 

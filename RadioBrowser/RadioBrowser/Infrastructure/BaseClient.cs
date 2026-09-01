@@ -11,7 +11,7 @@ namespace RadioBrowser.Infrastructure;
 
 public class BaseClient(IRestClient client, ILogger? logger = null)
 {
-    private static readonly JsonSerializerOptions DeserializeSettings = new() { Converters = { new DateTimeConverter(), new DateTimeOffsetConverter(), new BoolConverter() } };
+    private static readonly JsonSerializerOptions DeserializeSettings = new() { Converters = { new DateTimeConverter(), new DateTimeOffsetConverter(), new BoolConverter(), new EmptyStringToNullUriConverter() } };
 
     protected async Task<T> RequestAsync<T>(RestRequest request) where T : class
     {
